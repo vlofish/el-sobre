@@ -1,0 +1,42 @@
+<div>
+  <mat-table [dataSource]="dataSource" >
+
+    <ng-container matColumnDef="checkBox">
+      <mat-header-cell *matHeaderCellDef> Check </mat-header-cell>
+      <mat-cell *matCellDef="let source"> <mat-checkbox (click)="checkedRow(source.id)"></mat-checkbox> </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+      <mat-cell *matCellDef="let source"> {{ source.id }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let source"> {{ source.name }} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="budget">
+      <mat-header-cell *matHeaderCellDef> Budget </mat-header-cell>
+      <mat-cell *matCellDef="let source">
+        <p *ngIf="!rowHandler[source.id].displayInput"> {{ source.budget | currency:'MXN':'code' }} </p>
+        <input type="number" [(ngModel)]="source.budget" *ngIf="rowHandler[source.id].displayInput"/>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="adjust">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let source">
+        <button mat-raised-button color="{{ rowHandler[source.id].buttonColor }}" (click)="editRowBudget(source.id)"> {{ rowHandler[source.id].buttonName }} </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+    <mat-row *matRowDef="let rowData; columns: columnsToDisplay"></mat-row>
+
+  </mat-table>
+
+  <br/>
+
+  <button mat-raised-button color="warn" (click)="setToZero()"> To Zero </button>
+</div>
