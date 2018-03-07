@@ -3,7 +3,9 @@
 
     <ng-container matColumnDef="checkBox">
       <mat-header-cell *matHeaderCellDef> Check </mat-header-cell>
-      <mat-cell *matCellDef="let source"> <mat-checkbox (click)="checkedRow(source.id)"></mat-checkbox> </mat-cell>
+      <mat-cell *matCellDef="let source">
+        <mat-checkbox (click)="checkRow(source.id)"></mat-checkbox>
+      </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="id">
@@ -19,15 +21,15 @@
     <ng-container matColumnDef="budget">
       <mat-header-cell *matHeaderCellDef> Budget </mat-header-cell>
       <mat-cell *matCellDef="let source">
-        <p *ngIf="!rowHandler[source.id].displayInput"> {{ source.budget | currency:'MXN':'code' }} </p>
-        <input type="number" [(ngModel)]="source.budget" *ngIf="rowHandler[source.id].displayInput"/>
+        <p *ngIf="!rowUIHandler[source.id].displayInput"> {{ source.budget | currency:'MXN':'code' }} </p>
+        <input type="number" [(ngModel)]="source.budget" *ngIf="rowUIHandler[source.id].displayInput"/>
       </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="adjust">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell *matCellDef="let source">
-        <button mat-raised-button color="{{ rowHandler[source.id].buttonColor }}" (click)="editRowBudget(source.id)"> {{ rowHandler[source.id].buttonName }} </button>
+        <button mat-raised-button color="{{ rowUIHandler[source.id].buttonColor }}" (click)="editBudget(source.id)"> {{ rowUIHandler[source.id].buttonName }} </button>
       </mat-cell>
     </ng-container>
 
