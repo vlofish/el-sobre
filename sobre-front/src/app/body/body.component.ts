@@ -34,6 +34,7 @@ export class BodyComponent {
   setToZero(): void {
     this.rowUIHandler.forEach((row, index) => {
       if (row.checkedBox) {
+        row.disableCheckedBox = true,
         this.dataSource[index].budget = 0;
       }
     });
@@ -60,7 +61,7 @@ const SOBRE_DATA: Sobre[] = [
 ];
 
 const SOBRE_ROW_UI: SobreRowUI[] = [
-  {checkedBox: false, displayInput: false, buttonName: "Edit", buttonColor: "primary"},
-  {checkedBox: false, displayInput: false, buttonName: "Edit", buttonColor: "primary"},
-  {checkedBox: false, displayInput: false, buttonName: "Edit", buttonColor: "primary"}
+  {checkedBox: false, disableCheckedBox: false, displayInput: false, buttonName: "Edit", buttonColor: "primary"},
+  {checkedBox: false, disableCheckedBox: false, displayInput: false, buttonName: "Edit", buttonColor: "primary"},
+  {checkedBox: false, disableCheckedBox: false, displayInput: false, buttonName: "Edit", buttonColor: "primary"}
 ];
