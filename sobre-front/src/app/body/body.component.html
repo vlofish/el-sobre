@@ -4,13 +4,8 @@
     <ng-container matColumnDef="checkBox">
       <mat-header-cell *matHeaderCellDef> Check </mat-header-cell>
       <mat-cell *matCellDef="let source">
-        <mat-checkbox (click)="checkRow(source.id)"></mat-checkbox>
+        <mat-checkbox (click)="checkRow(source.id)" [disabled]="rowUIHandler[source.id].disableCheckedBox"></mat-checkbox>
       </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="id">
-      <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
-      <mat-cell *matCellDef="let source"> {{ source.id }} </mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="name">
@@ -21,7 +16,7 @@
     <ng-container matColumnDef="budget">
       <mat-header-cell *matHeaderCellDef> Budget </mat-header-cell>
       <mat-cell *matCellDef="let source">
-        <p *ngIf="!rowUIHandler[source.id].displayInput"> {{ source.budget | currency:'MXN':'code' }} </p>
+        <p *ngIf="!rowUIHandler[source.id].displayInput"> $ {{ source.budget }} </p>
         <input type="number" [(ngModel)]="source.budget" *ngIf="rowUIHandler[source.id].displayInput"/>
       </mat-cell>
     </ng-container>
