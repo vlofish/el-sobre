@@ -12,7 +12,7 @@ export class BodyComponent {
   private disableToZero = false;
 
   /**
-   *
+   * Function called by the "Edit"/"Done" button.
    */
   editBudget(id): void {
     let name: string = "Edit";
@@ -35,14 +35,14 @@ export class BodyComponent {
   }
 
   /**
-   *
+   * Function called by the checkbox.
    */
   checkRow(id): void {
     this.sobreRowUI[id].checkedBox = !this.sobreRowUI[id].checkedBox;
   }
 
   /**
-   *
+   * Function called by the "To Zero" button
    */
   budgetToZero(): void {
     this.disableToZero = true;
