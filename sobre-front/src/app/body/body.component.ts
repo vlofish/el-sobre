@@ -72,6 +72,7 @@ export interface Sobre {
  */
 export interface SobreRowUI {
   checkedBox: boolean;
+  disableCheckedBox: boolean;
   displayInput: boolean;
   buttonName: string;
   buttonColor: string;
