@@ -6,8 +6,8 @@ import { Component } from '@angular/core';
 })
 export class BodyComponent {
 
-  private dataSource = SOBRE_DATA;
-  private rowUIHandler = SOBRE_ROW_UI;
+  private sobreData = SOBRE_DATA;
+  private sobreRowUI = SOBRE_ROW_UI;
   private columnsToDisplay = ['checkBox', 'name', 'budget', 'adjust'];
   private disableToZero = false;
 
@@ -18,18 +18,18 @@ export class BodyComponent {
     let name: string = "Edit";
     let color: string = "primary";
 
-    if (!this.rowUIHandler[id].displayInput) {
+    if (!this.sobreRowUI[id].displayInput) {
       name  = "Done";
       color = "warn";
     }
 
-    this.rowUIHandler[id].displayInput = !this.rowUIHandler[id].displayInput;
-    this.rowUIHandler[id].buttonName   = name;
-    this.rowUIHandler[id].buttonColor  = color;
+    this.sobreRowUI[id].displayInput = !this.sobreRowUI[id].displayInput;
+    this.sobreRowUI[id].buttonName   = name;
+    this.sobreRowUI[id].buttonColor  = color;
 
     // If budget > $0 enable checkbox and toZero button
-    if (this.dataSource[id].budget > 0) {
-      this.rowUIHandler[id].disableCheckedBox = false;
+    if (this.sobreData[id].budget > 0) {
+      this.sobreRowUI[id].disableCheckedBox = false;
       this.disableToZero = false;
     }
   }
@@ -38,7 +38,7 @@ export class BodyComponent {
    *
    */
   checkRow(id): void {
-    this.rowUIHandler[id].checkedBox = !this.rowUIHandler[id].checkedBox;
+    this.sobreRowUI[id].checkedBox = !this.sobreRowUI[id].checkedBox;
   }
 
   /**
@@ -47,10 +47,10 @@ export class BodyComponent {
   budgetToZero(): void {
     this.disableToZero = true;
 
-    this.rowUIHandler.forEach((row, index) => {
+    this.sobreRowUI.forEach((row, index) => {
       if (row.checkedBox) {
         row.disableCheckedBox = true,
-        this.dataSource[index].budget = 0;
+        this.sobreData[index].budget = 0;
       } else {
         this.disableToZero = false;
       }
@@ -59,7 +59,7 @@ export class BodyComponent {
 };
 
 /**
- *
+ * interface of the data gotten from the WS.
  */
 export interface Sobre {
   id: number;
@@ -68,7 +68,7 @@ export interface Sobre {
 };
 
 /**
- *
+ * interface of the displayed web elements in the UI table.
  */
 export interface SobreRowUI {
   checkedBox: boolean;
@@ -78,16 +78,16 @@ export interface SobreRowUI {
 };
 
 /**
- *
+ * Mocked data to display in the table.
  */
 const SOBRE_DATA: Sobre[] = [
-  {id: 0, name: 'Rent', budget: 1200},
-  {id: 1, name: 'Car', budget: 1500},
-  {id: 2, name: 'Cats', budget: 200}
+  {id: 0, name: 'Name-A', budget: 1200},
+  {id: 1, name: 'Name-B', budget: 1500},
+  {id: 2, name: 'Name-C', budget: 200}
 ];
 
 /**
- *
+ * Array object in charge of the table web elements.
  */
 const SOBRE_ROW_UI: SobreRowUI[] = [
   {checkedBox: false, disableCheckedBox: false, displayInput: false, buttonName: "Edit", buttonColor: "primary"},
