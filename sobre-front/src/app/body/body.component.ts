@@ -6,57 +6,79 @@ import { Component } from '@angular/core';
 })
 export class BodyComponent {
 
-  private sobreData = SOBRE_DATA;
-  private sobreRowUI = SOBRE_ROW_UI;
+  private sobreData        = SOBRE_DATA;
+  private sobreRowUI       = SOBRE_ROW_UI;
   private columnsToDisplay = ['checkBox', 'name', 'budget', 'adjust'];
-  private disableToZero = false;
+  private disableToZero    = false;
 
   /**
    * Function called by the "Edit"/"Done" button.
    */
-  editBudget(id): void {
-    let name: string = "Edit";
-    let color: string = "primary";
+  editBudget(id: number): void {
+    this.changeButtonTextAndColor(id);
+    this.enableCheckboxAndZeroButton(id);
+  }
 
-    if (!this.sobreRowUI[id].displayInput) {
-      name  = "Done";
-      color = "warn";
-    }
+  /**
+   * If sobreRowUI[id].displayInput is true THEN buttonText = Done and buttonColor = warn.
+   * If sobreRowUI[id].displayInput is false THEN buttonText = Edit and buttonColor = primary.
+   */
+  changeButtonTextAndColor(id: number): void {
+    let displayInput: boolean = !this.sobreRowUI[id].displayInput;
 
-    this.sobreRowUI[id].displayInput = !this.sobreRowUI[id].displayInput;
-    this.sobreRowUI[id].buttonName   = name;
-    this.sobreRowUI[id].buttonColor  = color;
+    this.sobreRowUI[id].displayInput = displayInput;
+    this.sobreRowUI[id].buttonName   = displayInput ? "Done" : "Edit";
+    this.sobreRowUI[id].buttonColor  = displayInput ? "warn" : "primary";
+  }
 
-    // If budget > $0 enable checkbox and toZero button
-    if (this.sobreData[id].budget > 0) {
+  /**
+   * If budget > 0 and checkbox of the row is disabled:
+   *   Enable the checkbox of the specific column and the "To Zero" button.
+   */
+  enableCheckboxAndZeroButton(id: number): void {
+    let greaterThanZero  : boolean = this.sobreData[id].budget > 0;
+    let checkBoxDisabled : boolean = this.sobreRowUI[id].disableCheckedBox;
+
+    if (greaterThanZero && checkBoxDisabled) {
       this.sobreRowUI[id].disableCheckedBox = false;
-      this.disableToZero = false;
+      this.disableToZeroButton(false);
     }
   }
 
   /**
-   * Function called by the checkbox.
+   * Function called by the checkboxes.
+   * Toggles the boolean value of this.sobreRowUI[id].checkedBox.
    */
   checkRow(id): void {
     this.sobreRowUI[id].checkedBox = !this.sobreRowUI[id].checkedBox;
   }
 
   /**
-   * Function called by the "To Zero" button
+   * Function called by the "To Zero" button.
+   * Checks the checkboxes checked, and sets its budget to zero.
+   * If all checkboxes are checked; call disableToZeroButton(false).
    */
   budgetToZero(): void {
-    this.disableToZero = true;
+    this.disableToZeroButton(true);
 
     this.sobreRowUI.forEach((row, index) => {
       if (row.checkedBox) {
         row.disableCheckedBox = true,
         this.sobreData[index].budget = 0;
       } else {
-        this.disableToZero = false;
+        this.disableToZeroButton(false);
       }
     });
   }
-};
+
+  /**
+   * If value is true; disable the button "To Zero".
+   */
+  disableToZeroButton(value: boolean): void {
+    this.disableToZero = value;
+  }
+
+}
 
 /**
  * interface of the data gotten from the WS.
