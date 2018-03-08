@@ -4,7 +4,7 @@
     <ng-container matColumnDef="checkBox">
       <mat-header-cell *matHeaderCellDef> Check </mat-header-cell>
       <mat-cell *matCellDef="let source">
-        <mat-checkbox (click)="checkRow(source.id)" [disabled]="sobreRowUI[source.id].disableCheckedBox"></mat-checkbox>
+        <mat-checkbox (click)="checkRow(source.id)" [disabled]="sobreRowUI[source.id].disableCheckedBox" [checked]="sobreRowUI[source.id].checkedBox"></mat-checkbox>
       </mat-cell>
     </ng-container>
 
