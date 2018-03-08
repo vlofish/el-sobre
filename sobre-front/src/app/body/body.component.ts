@@ -1,15 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'body-component',
   templateUrl: './body.component.html'
 })
-export class BodyComponent {
+export class BodyComponent implements OnInit {
 
   private sobreData        = SOBRE_DATA;
   private sobreRowUI       = SOBRE_ROW_UI;
   private columnsToDisplay = ['checkBox', 'name', 'budget', 'adjust'];
   private disableToZero    = false;
+
+  ngOnInit() {
+    this.disableToZeroButton(true);
+
+    this.sobreData.forEach((data, index) => {
+      if (data.budget === 0) {
+        // this.sobreRowUI[index].checkedBox = true;
+        this.sobreRowUI[index].disableCheckedBox = true;
+      } else {
+        this.disableToZeroButton(false);
+      }
+    });
+  }
 
   /**
    * Function called by the "Edit"/"Done" button.
@@ -55,14 +68,15 @@ export class BodyComponent {
 
   /**
    * Function called by the "To Zero" button.
-   * Checks the checkboxes checked, and sets its budget to zero.
-   * If all checkboxes are checked; call disableToZeroButton(false).
+   * Checks the checkboxes checked or the disabled checkboxes and sets its budget to zero.
+   * If all checkboxes are checked or checkboxes disabled; call disableToZeroButton(false).
+   * row.disableCheckedBox in the if condition is necessary because of the logic in ngOnInit().
    */
   budgetToZero(): void {
     this.disableToZeroButton(true);
 
     this.sobreRowUI.forEach((row, index) => {
-      if (row.checkedBox) {
+      if (row.checkedBox || row.disableCheckedBox) {
         row.disableCheckedBox = true,
         this.sobreData[index].budget = 0;
       } else {
@@ -104,9 +118,9 @@ export interface SobreRowUI {
  * Mocked data to display in the table.
  */
 const SOBRE_DATA: Sobre[] = [
-  {id: 0, name: 'Name-A', budget: 1200},
-  {id: 1, name: 'Name-B', budget: 1500},
-  {id: 2, name: 'Name-C', budget: 200}
+  {id: 0, name: 'Name-A', budget: 0},
+  {id: 1, name: 'Name-B', budget: 0},
+  {id: 2, name: 'Name-C', budget: 0}
 ];
 
 /**
