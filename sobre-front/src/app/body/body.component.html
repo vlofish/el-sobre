@@ -1,11 +1,11 @@
 <div>
   <mat-table [dataSource]="sobreData" >
-
     <ng-container matColumnDef="checkBox">
       <mat-header-cell *matHeaderCellDef> Check </mat-header-cell>
       <mat-cell *matCellDef="let source">
         <mat-checkbox 
-          (click)="checkRow(source.id)" 
+          (click)="checkBox(source.id)"
+          [checked]="sobreRowUI[source.id].checkedBox"
           [disabled]="sobreRowUI[source.id].disableCheckedBox">
         </mat-checkbox>
       </mat-cell>
@@ -35,7 +35,6 @@
 
     <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
     <mat-row *matRowDef="let rowData; columns: columnsToDisplay"></mat-row>
-
   </mat-table>
 
   <br/>
