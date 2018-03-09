@@ -13,14 +13,16 @@ export class BodyComponent implements OnInit {
   private columnsToDisplay = ['checkBox', 'name', 'budget', 'adjust'];
   private disableToZero;
 
+  /**
+   * If a row has budget zero; check the box and disable it.
+   * Then call toZeroButtonAvailability() function.
+   */
   ngOnInit(): void {
     this.sobreData.forEach((data, index) => {
       if (data.budget === 0) {
-        this.sobreRowUI[index].checkedBox = true;
-        this.sobreRowUI[index].disableCheckedBox = true;
+        this.checkBoxProperties(true, true, index);
       }
     });
-
 
     this.toZeroButtonAvailability();
   }
@@ -54,8 +56,7 @@ export class BodyComponent implements OnInit {
     let checkBoxDisabled : boolean = this.sobreRowUI[id].disableCheckedBox;
 
     if (greaterThanZero && checkBoxDisabled) {
-      this.sobreRowUI[id].checkedBox = false;
-      this.sobreRowUI[id].disableCheckedBox = false;
+      this.checkBoxProperties(false, false, id);
       this.toZeroButtonAvailability(); // Whenever working with checkedBox and disableCheckedBox call this method.
     }
   }
@@ -64,11 +65,14 @@ export class BodyComponent implements OnInit {
    * Function called when clicking on a checkbox.
    * Toggles the boolean value of this.sobreRowUI[id].checkedBox.
    * setTimeout() fixes a bug that doesn't allow to set the checkmark as true and the uncheck mark as false.
+   * If cndition protects the checkmark to be removed when checkbox is disabled.
    */
   checkBox(id): void {
     setTimeout(() => {
-      this.sobreRowUI[id].checkedBox = !this.sobreRowUI[id].checkedBox;
-      this.toZeroButtonAvailability();
+      if (!this.sobreRowUI[id].disableCheckedBox) {
+        this.sobreRowUI[id].checkedBox = !this.sobreRowUI[id].checkedBox;
+        this.toZeroButtonAvailability();
+      }    
     }, 100);
   }
 
@@ -86,6 +90,14 @@ export class BodyComponent implements OnInit {
     });
 
     this.toZeroButtonAvailability();
+  }
+
+  /**
+   * Function in charge of toggling the checkbox properties.
+   */
+  checkBoxProperties(checked: boolean, disabled: boolean, id: number): void {
+    this.sobreRowUI[id].checkedBox = checked;
+    this.sobreRowUI[id].disableCheckedBox = disabled;
   }
 
   /**
