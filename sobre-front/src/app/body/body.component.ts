@@ -11,19 +11,18 @@ export class BodyComponent implements OnInit {
   private sobreData        = MOCKED_SOBRE_DATA;
   private sobreRowUI       = SOBRE_ROW_UI;
   private columnsToDisplay = ['checkBox', 'name', 'budget', 'adjust'];
-  private disableToZero    = false;
+  private disableToZero;
 
-  ngOnInit() {
-    this.disableToZeroButton(true);
-
+  ngOnInit(): void {
     this.sobreData.forEach((data, index) => {
       if (data.budget === 0) {
-        // this.sobreRowUI[index].checkedBox = true;
+        this.sobreRowUI[index].checkedBox = true;
         this.sobreRowUI[index].disableCheckedBox = true;
-      } else {
-        this.disableToZeroButton(false);
       }
     });
+
+
+    this.toZeroButtonAvailability();
   }
 
   /**
@@ -31,7 +30,7 @@ export class BodyComponent implements OnInit {
    */
   editBudget(id: number): void {
     this.changeButtonTextAndColor(id);
-    this.enableCheckboxAndZeroButton(id);
+    this.enableCheckbox(id);
   }
 
   /**
@@ -48,50 +47,64 @@ export class BodyComponent implements OnInit {
 
   /**
    * If budget > 0 and checkbox of the row is disabled:
-   *   Enable the checkbox of the specific column and the "To Zero" button.
+   *   Enable the checkbox of the specific column.
    */
-  enableCheckboxAndZeroButton(id: number): void {
+  enableCheckbox(id: number): void {
     let greaterThanZero  : boolean = this.sobreData[id].budget > 0;
     let checkBoxDisabled : boolean = this.sobreRowUI[id].disableCheckedBox;
 
     if (greaterThanZero && checkBoxDisabled) {
+      this.sobreRowUI[id].checkedBox = false;
       this.sobreRowUI[id].disableCheckedBox = false;
-      this.disableToZeroButton(false);
+      this.toZeroButtonAvailability(); // Whenever working with checkedBox and disableCheckedBox call this method.
     }
   }
 
   /**
-   * Function called by the checkboxes.
+   * Function called when clicking on a checkbox.
    * Toggles the boolean value of this.sobreRowUI[id].checkedBox.
+   * setTimeout() fixes a bug that doesn't allow to set the checkmark as true and the uncheck mark as false.
    */
-  checkRow(id): void {
-    this.sobreRowUI[id].checkedBox = !this.sobreRowUI[id].checkedBox;
+  checkBox(id): void {
+    setTimeout(() => {
+      this.sobreRowUI[id].checkedBox = !this.sobreRowUI[id].checkedBox;
+      this.toZeroButtonAvailability();
+    }, 100);
   }
 
   /**
    * Function called by the "To Zero" button.
    * Checks the checkboxes checked or the disabled checkboxes and sets its budget to zero.
-   * If all checkboxes are checked or checkboxes disabled; call disableToZeroButton(false).
    * row.disableCheckedBox in the if condition is necessary because of the logic in ngOnInit().
    */
   budgetToZero(): void {
-    this.disableToZeroButton(true);
-
     this.sobreRowUI.forEach((row, index) => {
       if (row.checkedBox || row.disableCheckedBox) {
         row.disableCheckedBox = true,
         this.sobreData[index].budget = 0;
-      } else {
-        this.disableToZeroButton(false);
       }
     });
+
+    this.toZeroButtonAvailability();
   }
 
   /**
-   * If value is true; disable the button "To Zero".
+   * Sweep all the checked and disabled properties of the rows.
+   * If at least one row meets the requirement; enable the To Zero button.
+   * Requirement = checkedBox: true, disableCheckedBox: false.
    */
-  disableToZeroButton(value: boolean): void {
-    this.disableToZero = value;
+  toZeroButtonAvailability(): void {
+    this.disableToZero = true;
+
+    for (let i = 0; i < this.sobreRowUI.length; i++) {
+      let checkBox = this.sobreRowUI[i].checkedBox;
+      let disabled = this.sobreRowUI[i].disableCheckedBox;
+
+      if (checkBox && !disabled) {
+        this.disableToZero = false;
+        break;
+      }
+    }
   }
 
 }
