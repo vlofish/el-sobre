@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MOCKED_SOBRE_DATA } from '../constants/mocked-sobre-data';
+import { SOBRE_ROW_UI } from '../constants/sobre-row-ui';
 
 @Component({
   selector: 'body-component',
@@ -6,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BodyComponent implements OnInit {
 
-  private sobreData        = SOBRE_DATA;
+  private sobreData        = MOCKED_SOBRE_DATA;
   private sobreRowUI       = SOBRE_ROW_UI;
   private columnsToDisplay = ['checkBox', 'name', 'budget', 'adjust'];
   private disableToZero    = false;
@@ -93,41 +95,3 @@ export class BodyComponent implements OnInit {
   }
 
 }
-
-/**
- * interface of the data gotten from the WS.
- */
-export interface Sobre {
-  id: number;
-  name: string;
-  budget: number;
-};
-
-/**
- * interface of the displayed web elements in the UI table.
- */
-export interface SobreRowUI {
-  checkedBox: boolean;
-  disableCheckedBox: boolean;
-  displayInput: boolean;
-  buttonName: string;
-  buttonColor: string;
-};
-
-/**
- * Mocked data to display in the table.
- */
-const SOBRE_DATA: Sobre[] = [
-  {id: 0, name: 'Name-A', budget: 0},
-  {id: 1, name: 'Name-B', budget: 0},
-  {id: 2, name: 'Name-C', budget: 0}
-];
-
-/**
- * Array object in charge of the table web elements.
- */
-const SOBRE_ROW_UI: SobreRowUI[] = [
-  {checkedBox: false, disableCheckedBox: false, displayInput: false, buttonName: "Edit", buttonColor: "primary"},
-  {checkedBox: false, disableCheckedBox: false, displayInput: false, buttonName: "Edit", buttonColor: "primary"},
-  {checkedBox: false, disableCheckedBox: false, displayInput: false, buttonName: "Edit", buttonColor: "primary"}
-];
