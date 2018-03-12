@@ -28,9 +28,11 @@ export class BodyComponent implements OnInit {
   }
 
   /**
-   * Function called by the "Edit"/"Done" button.
+   * Function called when:
+   *   The "Edit / Done" button is clicked
+   *   The click action is trigered on the Budget text or the Name text.
    */
-  editBudget(id: number): void {
+  editNameAndBudget(id: number): void {
     this.changeButtonTextAndColor(id);
     this.enableCheckbox(id);
   }
@@ -72,7 +74,7 @@ export class BodyComponent implements OnInit {
       if (!this.sobreRowUI[id].disableCheckedBox) {
         this.sobreRowUI[id].checkedBox = !this.sobreRowUI[id].checkedBox;
         this.toZeroButtonAvailability();
-      }    
+      }
     }, 100);
   }
 
