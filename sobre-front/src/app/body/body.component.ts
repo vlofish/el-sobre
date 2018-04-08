@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MOCKED_SOBRE_DATA } from '../constants/mocked-sobre-data';
+
+import { SobreService } from '../services/sobre.service';
 import { SOBRE_ROW_UI } from '../constants/sobre-row-ui';
 
 @Component({
@@ -8,16 +9,24 @@ import { SOBRE_ROW_UI } from '../constants/sobre-row-ui';
 })
 export class BodyComponent implements OnInit {
 
-  private sobreData        = MOCKED_SOBRE_DATA;
+  private sobreData;
   private sobreRowUI       = SOBRE_ROW_UI;
   private columnsToDisplay = ['checkBox', 'name', 'budget', 'adjust'];
   private disableToZero;
+
+  constructor(private sobreService: SobreService) {}
 
   /**
    * If a row has budget zero; check the box and disable it.
    * Then call toZeroButtonAvailability() function.
    */
   ngOnInit(): void {
+    this.getSobreData();
+  }
+
+  getSobreData(): void {
+    this.sobreData = this.sobreService.getSobreData();
+
     this.sobreData.forEach((data, index) => {
       if (data.budget === 0) {
         this.checkBoxProperties(true, true, index);
