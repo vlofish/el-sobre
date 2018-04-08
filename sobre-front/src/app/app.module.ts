@@ -10,6 +10,8 @@ import { FooterComponent } from './footer/footer.component';
 import { BodyComponent } from './body/body.component';
 import { AppComponent } from './app.component';
 
+import { SobreService } from './services/sobre.service';
+
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -27,7 +29,7 @@ import { AppComponent } from './app.component';
     MatTableModule
   ],
   schemas:[ NO_ERRORS_SCHEMA ],
-  providers: [],
+  providers: [SobreService],
   bootstrap: [AppComponent]
 })
 
